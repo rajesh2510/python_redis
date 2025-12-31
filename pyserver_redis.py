@@ -45,16 +45,12 @@ def login():
 def protected():
     # 1. Get token from cookie
     sess_email = session.get('token')
-
     if not sess_email:
-        return jsonify({'message': 'Please login'}), 401
-        
+        return jsonify({'message': 'Please login'}), 401 
     # 2. Check if session exists in Redis
     username = r.get(f'session:{sess_email}')
-    
     if not username:
-        return jsonify({'message': 'Invalid or expired session'}), 401
-        
+        return jsonify({'message': 'Invalid or expired session'}), 401  
     return jsonify({'message': f'Hello {username}, your email is {sess_email}, you are in a protected area!'}), 200
 
 
@@ -67,8 +63,7 @@ def logout():
         # Delete the session from Redis immediately
         r.delete(f'session:{sess_email}')
         session.pop('token', None)
-        return jsonify({'message': 'Logged out'}), 201
-
+        return jsonify({'message': 'Logged out'}), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
